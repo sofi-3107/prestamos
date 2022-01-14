@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "463095940184",
+    "project_id": "reservas-6b5ed",
+    "storage_bucket": "reservas-6b5ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463095940184:android:470d489db131ec6068f62d",
+        "android_client_info": {
+          "package_name": "com.sofi.prestamos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463095940184-n6rntknmhrfcg4sqashp57lt5245bjft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXxZPPmARHQ4z3FVQcFJ3u976TUToozUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463095940184-n6rntknmhrfcg4sqashp57lt5245bjft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
