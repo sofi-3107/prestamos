@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:prestamos/models/usuario.dart';
 
 class UsuariosService {
-  Future<List<Usuario>> getAllUsuarios() async {
+  static Future<List<Usuario>> getAllUsuarios() async {
     final response =
         await http.get(Uri.parse('http://localhost:3000/usuarios'));
     if (response.statusCode == 200) {
