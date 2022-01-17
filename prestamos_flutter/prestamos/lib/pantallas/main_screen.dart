@@ -2,31 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:prestamos/models/usuario.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstScreen extends StatefulWidget {
   FirstScreen({Key? key}) : super(key: key);
-
-  var listaPrueba = [
-    'sandía',
-    'Manzana',
-    'Pera',
-    'Uva',
-    'Banana',
-    'Frutilla',
-    'Ciruela',
-    'Manzana',
-    'Pera',
-    'Uva',
-    'Banana',
-    'Frutilla',
-    'Ciruela',
-    'Manzana',
-    'Pera',
-    'Uva',
-    'Banana',
-    'Frutilla',
-    'Ciruela',
-  ];
 
   List<Usuario> traidos = [];
 
@@ -152,11 +131,22 @@ class __CrudIconStateState extends State<_CrudIconState> {
       visible: widget.editable,
       child: Row(
         children: [
-          const Icon(Icons.edit, color: Colors.blueAccent),
+          IconButton(
+              icon: Icon(Icons.edit, color: Colors.blueAccent),
+              tooltip: 'Editar Usuario',
+              onPressed: () {
+                () => Fluttertoast.showToast(msg: 'Editar', fontSize: 30);
+              }),
           Container(
             width: 10,
           ),
-          const Icon(Icons.delete, color: Colors.red),
+          IconButton(
+            onPressed: () {
+              () => Fluttertoast.showToast(msg: 'Borrar');
+            },
+            icon: Icon(Icons.delete, color: Colors.red),
+            tooltip: 'Borrar Usuario',
+          )
         ],
       ),
     );
