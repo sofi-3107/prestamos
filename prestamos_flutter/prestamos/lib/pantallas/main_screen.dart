@@ -95,31 +95,45 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 }
 
-class ItemUsuario extends StatelessWidget {
+class ItemUsuario extends StatefulWidget {
   ItemUsuario({Key? key, @required this.indice, @required this.lista})
       : super(key: key);
 
   final indice;
   final lista;
-  var editable; // Sera manejado por un evento LONGTOUCHen el LISTILE
+
+  @override
+  State<ItemUsuario> createState() => _ItemUsuarioState();
+}
+
+class _ItemUsuarioState extends State<ItemUsuario> {
+/*   @override
+  void initState() { 
+    var isEditable=false; 
+    super.initState();
+  } */
+  var isEditable = false;
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(1),
-      child: ListTile(
+        margin: const EdgeInsets.all(1),
+        child: ListTile(
           title: Row(children: [
-            Text(lista[indice].nombre),
+            Text(widget.lista[widget.indice].nombre),
             Container(
               width: 50,
             ),
-            Text(lista[indice].apellido),
+            Text(widget.lista[widget.indice].apellido),
             Expanded(child: Container()),
             _CrudIconState(
-              editable: true,
+              editable: isEditable,
             ),
           ]),
-          onLongPress: () {}),
-    );
+          onLongPress: () => setState(() {
+            isEditable ? isEditable = false : isEditable = true;
+          }),
+        ));
   }
 }
 
