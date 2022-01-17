@@ -2,10 +2,12 @@ const express=require('express');
 const app = express();
 const db=require('./models');
 const bodyParser=require('body-parser');
+const cors=require('cors');
 
 
 app.use(bodyParser.urlencoded({ extended:true}));
 app.use(bodyParser.json());
+app.use(cors());
 
 
 /**use es porque router es un middelware proporcionado por express, delega el manejo de rutas */

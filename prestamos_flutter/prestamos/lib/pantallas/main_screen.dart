@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prestamos/models/usuario.dart';
-import 'package:prestamos/services/usuarios_service.dart';
+import 'package:prestamos/providers/usuario_provider.dart';
+import 'package:provider/provider.dart';
 
 class FirstScreen extends StatefulWidget {
   FirstScreen({Key? key}) : super(key: key);
@@ -27,6 +28,8 @@ class FirstScreen extends StatefulWidget {
     'Ciruela',
   ];
 
+  List<Usuario> traidos = [];
+
   @override
   _FirstScreenState createState() => _FirstScreenState();
 }
@@ -34,6 +37,12 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
+    final users = Provider.of<UsuarioProvider>(context);
+    users
+        .getUsuarios()
+        .then(((List<Usuario> usuarios) => widget.traidos.addAll(usuarios)));
+
+    widget.traidos.forEach((Usuario u) => print(u.nombre));
     return Scaffold(
         appBar: AppBar(
           title: const Text('Lista de Frutas'),
@@ -42,8 +51,8 @@ class _FirstScreenState extends State<FirstScreen> {
           slivers: [
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
-              return ItemFrutas(index: index, lista: widget.listaPrueba);
-            }, childCount: widget.listaPrueba.length))
+              return ItemFrutas(index: index, lista: widget.traidos);
+            }, childCount: widget.traidos.length))
           ],
         ));
   }
@@ -59,7 +68,7 @@ class ItemFrutas extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(1),
-      child: ListTile(title: Text(lista[index])),
+      child: ListTile(title: Text(lista[index].nombre)),
     );
   }
 }

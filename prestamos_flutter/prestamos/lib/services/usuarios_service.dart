@@ -5,7 +5,7 @@ import 'package:prestamos/models/usuario.dart';
 class UsuariosService {
   static Future<List<Usuario>> getAllUsuarios() async {
     final response =
-        await http.get(Uri.parse('http://localhost:3000/usuarios'));
+        await http.get(Uri.parse('http://192.168.100.4:3000/usuarios'));
     if (response.statusCode == 200) {
       final decodedResponse = await json.decode(response.body);
       List<Usuario> usuarios = [];

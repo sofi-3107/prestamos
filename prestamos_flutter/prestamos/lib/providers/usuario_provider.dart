@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:prestamos/services/usuarios_service.dart';
 import 'package:provider/provider.dart';
 import 'package:prestamos/models/usuario.dart';
 
-class UsuarioProvider with ChangeNotifier {
+class UsuarioProvider extends ChangeNotifier {
   List<Usuario> _usuarios = [];
 
-  List<Usuario> getUsuarios() => _usuarios;
+  Future<List<Usuario>> getUsuarios() => UsuariosService.getAllUsuarios();
 
   void addUsuario(Usuario user) {
     _usuarios.add(user);
