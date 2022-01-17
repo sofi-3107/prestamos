@@ -9,9 +9,10 @@ class UsuariosService {
     if (response.statusCode == 200) {
       final decodedResponse = await json.decode(response.body);
       List<Usuario> usuarios = [];
-      for (var user in decodedResponse['usuario']) {
-        usuarios.add(Usuario.fromJson(user));
+      for (var i = 0; i < decodedResponse.length; i++) {
+        usuarios.add(Usuario.fromJson(decodedResponse[i]));
       }
+
       return usuarios;
     }
     throw Exception('Failed to load users');

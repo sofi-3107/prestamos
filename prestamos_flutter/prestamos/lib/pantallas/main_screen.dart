@@ -38,37 +38,42 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<UsuarioProvider>(context);
-    users
-        .getUsuarios()
-        .then(((List<Usuario> usuarios) => widget.traidos.addAll(usuarios)));
+    users.getUsuarios().then(((List<Usuario> usuarios) {
+      print(usuarios[0].nombre);
+      widget.traidos.addAll(usuarios);
+      print('traidos: ' + widget.traidos[0].apellido.toString());
+    }));
 
-    widget.traidos.forEach((Usuario u) => print(u.nombre));
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Frutas'),
+          title: const Text('Lista de Usuarios'),
         ),
         body: CustomScrollView(
           slivers: [
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
-              return ItemFrutas(index: index, lista: widget.traidos);
+              return ItemUsuario(indice: index, lista: widget.traidos);
             }, childCount: widget.traidos.length))
           ],
         ));
   }
 }
 
-class ItemFrutas extends StatelessWidget {
-  const ItemFrutas({Key? key, @required this.index, @required this.lista})
+class ItemUsuario extends StatelessWidget {
+  const ItemUsuario({Key? key, @required this.indice, @required this.lista})
       : super(key: key);
 
-  final index;
+  final indice;
   final lista;
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(1),
-      child: ListTile(title: Text(lista[index].nombre)),
+      margin: const EdgeInsets.all(1),
+      child: ListTile(
+          title: Row(children: [
+        Text(lista[indice].nombre),
+        Text(lista[indice].apellido)
+      ])),
     );
   }
 }

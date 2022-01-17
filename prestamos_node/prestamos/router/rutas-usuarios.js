@@ -12,7 +12,7 @@ const router=express.Router();
 router.get('/',async(req,res) =>{
     try {
         let usuarios=await db.Usuario.findAll();
-        res.status(200).send(usuarios);
+        res.status(200).json(usuarios);
     } catch (error) {
         res.status(400).send('No se pudieron traer los usuarios, error: '+error.message);
     }
