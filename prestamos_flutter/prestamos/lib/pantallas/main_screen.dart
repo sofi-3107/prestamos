@@ -36,6 +36,11 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final users = Provider.of<UsuarioProvider>(context);
     users.getUsuarios().then(((List<Usuario> usuarios) {
@@ -44,18 +49,47 @@ class _FirstScreenState extends State<FirstScreen> {
       print('traidos: ' + widget.traidos[0].apellido.toString());
     }));
 
+    var customScrollView = CustomScrollView(
+      slivers: [
+        SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+          return ItemUsuario(indice: index, lista: widget.traidos);
+        }, childCount: widget.traidos.length))
+      ],
+    );
     return Scaffold(
         appBar: AppBar(
           title: const Text('Lista de Usuarios'),
         ),
-        body: CustomScrollView(
-          slivers: [
-            SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-              return ItemUsuario(indice: index, lista: widget.traidos);
-            }, childCount: widget.traidos.length))
-          ],
-        ));
+        body: FutureBuilder<List<Usuario>>(
+            future: _populateTraidos(users, widget.traidos),
+            builder: (context, snaphot) {
+              if (snaphot.hasData) {
+                return CustomScrollView(
+                  slivers: [
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                      return ItemUsuario(indice: index, lista: widget.traidos);
+                    }, childCount: widget.traidos.length))
+                  ],
+                );
+              } else if (snaphot.hasError) {
+                return const Text('Ha ocurrido un error');
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }));
+  }
+
+  List<Usuario> _populateTraidos(users, traidos) {
+    users.getUsuarios().then(((List<Usuario> usuarios) {
+      traidos.addAll(usuarios);
+    }));
+    if (traidos == null) {
+      return [];
+    } else {
+      return traidos;
+    }
   }
 }
 
