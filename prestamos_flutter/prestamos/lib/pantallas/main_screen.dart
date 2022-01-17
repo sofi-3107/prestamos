@@ -43,11 +43,11 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<UsuarioProvider>(context);
-    users.getUsuarios().then(((List<Usuario> usuarios) {
+    /*users.getUsuarios().then(((List<Usuario> usuarios) {
       print(usuarios[0].nombre);
       widget.traidos.addAll(usuarios);
       print('traidos: ' + widget.traidos[0].apellido.toString());
-    }));
+    }));*/
 
     var customScrollView = CustomScrollView(
       slivers: [
@@ -81,9 +81,11 @@ class _FirstScreenState extends State<FirstScreen> {
             }));
   }
 
-  List<Usuario> _populateTraidos(users, traidos) {
-    users.getUsuarios().then(((List<Usuario> usuarios) {
+// este future es una promesa que debe tener el mismo tipo que el future dentro del widget futurebuilder
+  Future<List<Usuario>> _populateTraidos(users, traidos) async {
+    await users.getUsuarios().then(((List<Usuario> usuarios) {
       traidos.addAll(usuarios);
+      print(traidos.length);
     }));
     if (traidos == null) {
       return [];
@@ -94,20 +96,55 @@ class _FirstScreenState extends State<FirstScreen> {
 }
 
 class ItemUsuario extends StatelessWidget {
-  const ItemUsuario({Key? key, @required this.indice, @required this.lista})
+  ItemUsuario({Key? key, @required this.indice, @required this.lista})
       : super(key: key);
 
   final indice;
   final lista;
+  var editable; // Sera manejado por un evento LONGTOUCHen el LISTILE
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(1),
       child: ListTile(
           title: Row(children: [
-        Text(lista[indice].nombre),
-        Text(lista[indice].apellido)
-      ])),
+            Text(lista[indice].nombre),
+            Container(
+              width: 50,
+            ),
+            Text(lista[indice].apellido),
+            Expanded(child: Container()),
+            _CrudIconState(
+              editable: true,
+            ),
+          ]),
+          onLongPress: () {}),
+    );
+  }
+}
+
+class _CrudIconState extends StatefulWidget {
+  _CrudIconState({Key? key, @required this.editable}) : super(key: key);
+
+  var editable;
+  @override
+  __CrudIconStateState createState() => __CrudIconStateState();
+}
+
+class __CrudIconStateState extends State<_CrudIconState> {
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: widget.editable,
+      child: Row(
+        children: [
+          const Icon(Icons.edit, color: Colors.blueAccent),
+          Container(
+            width: 10,
+          ),
+          const Icon(Icons.delete, color: Colors.red),
+        ],
+      ),
     );
   }
 }
