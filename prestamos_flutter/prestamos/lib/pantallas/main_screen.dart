@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestamos/models/usuario.dart';
+import 'package:prestamos/pantallas/user_form.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -89,26 +90,41 @@ class ItemUsuario extends StatefulWidget {
 class _ItemUsuarioState extends State<ItemUsuario> {
   Widget build(BuildContext context) {
     return Card(
-        margin: const EdgeInsets.all(1),
-        child: Dismissible(
-          key: Key(widget.indice.toString()),
-          onDismissed: (direction) {},
-          background: Container(
-              color: Colors.red,
-              child: const Center(
-                  child: Text("Estas por eliminar este usuario",
-                      style: TextStyle(fontSize: 15, color: Colors.white)))),
-          child: ListTile(
+      margin: const EdgeInsets.all(1),
+      child: Dismissible(
+        key: Key(widget.indice.toString()),
+        onDismissed: (direction) {},
+        background: Container(
+            color: Colors.red,
+            child: const Center(
+                child: Text("Estas por eliminar este usuario",
+                    style: TextStyle(fontSize: 15, color: Colors.white)))),
+        child: ListTile(
             title: Row(children: [
               Text(widget.lista[widget.indice].nombre),
               Container(
                 width: 50,
               ),
               Text(widget.lista[widget.indice].apellido),
-              Expanded(child: SizedBox()),
             ]),
-            onLongPress: () => setState(() {}),
-          ),
-        ));
+            onLongPress: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => UserForm()));
+            }),
+      ),
+    );
   }
 }
+
+
+
+/* PARA HACER PRUEBAS*/
+/**Scaffold.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.blueAccent,
+                  content:
+                      Text('Aqui se navegaria a la pantalla del formulario')));
+              Fluttertoast.showToast(
+                  msg: 'vas a navegar al formulario',
+                  backgroundColor: Colors.pink,
+                  textColor: Colors.blue,
+                  gravity: ToastGravity.TOP); */
