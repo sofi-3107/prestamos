@@ -39,6 +39,7 @@ class _FirstScreenState extends State<FirstScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Lista de Usuarios'),
+          centerTitle: true,
         ),
         body: FutureBuilder<List<Usuario>>(
             future: _populateTraidos(users, widget.traidos),
@@ -86,69 +87,28 @@ class ItemUsuario extends StatefulWidget {
 }
 
 class _ItemUsuarioState extends State<ItemUsuario> {
-/*   @override
-  void initState() { 
-    var isEditable=false; 
-    super.initState();
-  } */
-  var isEditable = false;
-
-  @override
   Widget build(BuildContext context) {
     return Card(
         margin: const EdgeInsets.all(1),
-        child: ListTile(
-          title: Row(children: [
-            Text(widget.lista[widget.indice].nombre),
-            Container(
-              width: 50,
-            ),
-            Text(widget.lista[widget.indice].apellido),
-            Expanded(child: Container()),
-            _CrudIconState(
-              editable: isEditable,
-            ),
-          ]),
-          onLongPress: () => setState(() {
-            isEditable ? isEditable = false : isEditable = true;
-          }),
-        ));
-  }
-}
-
-class _CrudIconState extends StatefulWidget {
-  _CrudIconState({Key? key, @required this.editable}) : super(key: key);
-
-  var editable;
-  @override
-  __CrudIconStateState createState() => __CrudIconStateState();
-}
-
-class __CrudIconStateState extends State<_CrudIconState> {
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: widget.editable,
-      child: Row(
-        children: [
-          IconButton(
-              icon: Icon(Icons.edit, color: Colors.blueAccent),
-              tooltip: 'Editar Usuario',
-              onPressed: () {
-                () => Fluttertoast.showToast(msg: 'Editar', fontSize: 30);
-              }),
-          Container(
-            width: 10,
+        child: Dismissible(
+          key: Key(widget.indice.toString()),
+          onDismissed: (direction) {},
+          background: Container(
+              color: Colors.red,
+              child: const Center(
+                  child: Text("Estas por eliminar este usuario",
+                      style: TextStyle(fontSize: 15, color: Colors.white)))),
+          child: ListTile(
+            title: Row(children: [
+              Text(widget.lista[widget.indice].nombre),
+              Container(
+                width: 50,
+              ),
+              Text(widget.lista[widget.indice].apellido),
+              Expanded(child: SizedBox()),
+            ]),
+            onLongPress: () => setState(() {}),
           ),
-          IconButton(
-            onPressed: () {
-              () => Fluttertoast.showToast(msg: 'Borrar');
-            },
-            icon: Icon(Icons.delete, color: Colors.red),
-            tooltip: 'Borrar Usuario',
-          )
-        ],
-      ),
-    );
+        ));
   }
 }
