@@ -100,7 +100,12 @@ class _ItemUsuarioState extends State<ItemUsuario> {
       margin: const EdgeInsets.all(1),
       child: Dismissible(
         key: Key(widget.indice.toString()),
-        onDismissed: (direction) {},
+        onDismissed: (direction) {
+          Provider.of<UsuarioProvider>(context, listen: false)
+              .dropUsuario(widget.lista[widget.indice]);
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text('Usuario eliminado')));
+        },
         background: Container(
             color: Colors.red,
             child: const Center(
