@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class UserForm extends StatefulWidget {
   UserForm({Key? key, @required this.isUpdate, this.id = 0}) : super(key: key);
@@ -12,6 +13,10 @@ class UserForm extends StatefulWidget {
 
 class _UserFormState extends State<UserForm> {
   final _formKey = GlobalKey<FormState>();
+  final _commonValidations = MultiValidator([
+    RequiredValidator(errorText: "Debe Completar este campo"),
+  ]);
+
   //final TextEditingController nombreController = TextEditingController();
 
   @override
@@ -29,25 +34,19 @@ class _UserFormState extends State<UserForm> {
               child: Column(
                 children: [
                   TextFormField(
-                      validator: (value) {
-                        _validateIfNotEmpty(value);
-                      },
+                      validator: _commonValidations,
                       decoration: _stylizeInput('Apellido')),
                   SizedBox(
                     height: 30,
                   ),
                   TextFormField(
-                      validator: (value) {
-                        _validateIfNotEmpty(value);
-                      },
+                      validator: _commonValidations,
                       decoration: _stylizeInput('Nombre')),
                   SizedBox(
                     height: 30,
                   ),
                   TextFormField(
-                    validator: (value) {
-                      _validateIfNotEmpty(value);
-                    },
+                    validator: _commonValidations,
                     decoration: _stylizeInput('telefono'),
                     keyboardType: TextInputType.number,
                   ),
@@ -55,7 +54,7 @@ class _UserFormState extends State<UserForm> {
                     height: 30,
                   ),
                   TextFormField(
-                      validator: (value) {},
+                      validator: _commonValidations,
                       decoration: _stylizeInput('curso')),
                   SizedBox(
                     height: 30,
@@ -76,11 +75,5 @@ class _UserFormState extends State<UserForm> {
             }
           }),
     );
-  }
-}
-
-_validateIfNotEmpty(value) {
-  if (value.isEmpty) {
-    return 'Debe completar';
   }
 }
