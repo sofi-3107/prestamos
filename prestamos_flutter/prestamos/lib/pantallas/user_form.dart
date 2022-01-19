@@ -1,8 +1,12 @@
+import 'package:flrx_validator/flrx_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class UserForm extends StatefulWidget {
-  const UserForm({Key? key}) : super(key: key);
+  UserForm({Key? key, @required this.isUpdate, this.id = 0}) : super(key: key);
 
+  final isUpdate;
+  final int id;
   @override
   _UserFormState createState() => _UserFormState();
 }
@@ -24,19 +28,35 @@ class _UserFormState extends State<UserForm> {
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(decoration: _stylizeInput('Apellido')),
+                  TextFormField(
+                      validator: (value) {
+                        _validateIfNotEmpty(value);
+                      },
+                      decoration: _stylizeInput('Apellido')),
                   SizedBox(
                     height: 30,
                   ),
-                  TextFormField(decoration: _stylizeInput('Nombre')),
+                  TextFormField(
+                      validator: (value) {
+                        _validateIfNotEmpty(value);
+                      },
+                      decoration: _stylizeInput('Nombre')),
                   SizedBox(
                     height: 30,
                   ),
-                  TextFormField(decoration: _stylizeInput('telefono')),
+                  TextFormField(
+                    validator: (value) {
+                      _validateIfNotEmpty(value);
+                    },
+                    decoration: _stylizeInput('telefono'),
+                    keyboardType: TextInputType.number,
+                  ),
                   SizedBox(
                     height: 30,
                   ),
-                  TextFormField(decoration: _stylizeInput('curso')),
+                  TextFormField(
+                      validator: (value) {},
+                      decoration: _stylizeInput('curso')),
                   SizedBox(
                     height: 30,
                   ),
@@ -48,6 +68,21 @@ class _UserFormState extends State<UserForm> {
               )),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.save_rounded),
+          onPressed: () {
+            print(
+                'estado del formulario al guardar:${_formKey.currentState.toString()}');
+            if (_formKey.currentState!.validate()) {
+              Fluttertoast.showToast(msg: 'Validacion hecha');
+            }
+          }),
     );
+  }
+}
+
+_validateIfNotEmpty(value) {
+  if (value!.isEmpty) {
+    return 'Debe completar';
   }
 }

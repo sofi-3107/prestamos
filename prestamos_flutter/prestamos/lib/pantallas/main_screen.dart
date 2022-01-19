@@ -38,28 +38,35 @@ class _FirstScreenState extends State<FirstScreen> {
       ],
     );
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Lista de Usuarios'),
-          centerTitle: true,
-        ),
-        body: FutureBuilder<List<Usuario>>(
-            future: _populateTraidos(users, widget.traidos),
-            builder: (context, snaphot) {
-              if (snaphot.hasData) {
-                return CustomScrollView(
-                  slivers: [
-                    SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index) {
-                      return ItemUsuario(indice: index, lista: widget.traidos);
-                    }, childCount: widget.traidos.length))
-                  ],
-                );
-              } else if (snaphot.hasError) {
-                return const Text('Ha ocurrido un error');
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            }));
+      appBar: AppBar(
+        title: const Text('Lista de Usuarios'),
+        centerTitle: true,
+      ),
+      body: FutureBuilder<List<Usuario>>(
+          future: _populateTraidos(users, widget.traidos),
+          builder: (context, snaphot) {
+            if (snaphot.hasData) {
+              return CustomScrollView(
+                slivers: [
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                    return ItemUsuario(indice: index, lista: widget.traidos);
+                  }, childCount: widget.traidos.length)),
+                ],
+              );
+            } else if (snaphot.hasError) {
+              return const Text('Ha ocurrido un error');
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => UserForm()));
+          },
+          child: Icon(Icons.add)),
+    );
   }
 
 // este future es una promesa que debe tener el mismo tipo que el future dentro del widget futurebuilder
@@ -107,10 +114,7 @@ class _ItemUsuarioState extends State<ItemUsuario> {
               ),
               Text(widget.lista[widget.indice].apellido),
             ]),
-            onLongPress: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UserForm()));
-            }),
+            onLongPress: () {}),
       ),
     );
   }
