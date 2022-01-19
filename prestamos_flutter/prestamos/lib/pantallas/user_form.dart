@@ -1,4 +1,3 @@
-import 'package:flrx_validator/flrx_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -13,6 +12,7 @@ class UserForm extends StatefulWidget {
 
 class _UserFormState extends State<UserForm> {
   final _formKey = GlobalKey<FormState>();
+  //final TextEditingController nombreController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +71,6 @@ class _UserFormState extends State<UserForm> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.save_rounded),
           onPressed: () {
-            print(
-                'estado del formulario al guardar:${_formKey.currentState.toString()}');
             if (_formKey.currentState!.validate()) {
               Fluttertoast.showToast(msg: 'Validacion hecha');
             }
@@ -82,7 +80,7 @@ class _UserFormState extends State<UserForm> {
 }
 
 _validateIfNotEmpty(value) {
-  if (value!.isEmpty) {
+  if (value.isEmpty) {
     return 'Debe completar';
   }
 }
