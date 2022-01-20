@@ -6,9 +6,13 @@ import 'package:prestamos/repositories/crud_repository.dart';
 class UsuariosService implements CrudRepository<Usuario> {
   final rootPath = 'http://192.168.100.4:3000/';
   @override
-  Future<bool> createNew(Usuario object, String pathSection) {
-    // TODO: implement createNew
-    throw UnimplementedError();
+  Future<String> createNew(Usuario object, String pathSection) async {
+    final response = await http.put(Uri.parse(rootPath + pathSection),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(object));
+    return response.toString();
   }
 
   @override
@@ -41,7 +45,6 @@ class UsuariosService implements CrudRepository<Usuario> {
   /**No funciona sin los headers, da error de que no rconoce el caracter */
   @override
   Future<String> delete(int id, String pathSection) async {
-    print(rootPath + pathSection + id.toString());
     final response = await http.delete(
       Uri.parse(rootPath + pathSection + id.toString()),
       headers: <String, String>{

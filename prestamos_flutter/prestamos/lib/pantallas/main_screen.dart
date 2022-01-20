@@ -3,18 +3,16 @@ import 'package:prestamos/models/usuario.dart';
 import 'package:prestamos/pantallas/user_form.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class FirstScreen extends StatefulWidget {
   FirstScreen({Key? key}) : super(key: key);
-
-  List<Usuario> traidos = [];
 
   @override
   _FirstScreenState createState() => _FirstScreenState();
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  List<Usuario> traidos = [];
   @override
   void initState() {
     super.initState();
@@ -23,18 +21,13 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<UsuarioProvider>(context);
-    /*users.getUsuarios().then(((List<Usuario> usuarios) {
-      print(usuarios[0].nombre);
-      widget.traidos.addAll(usuarios);
-      print('traidos: ' + widget.traidos[0].apellido.toString());
-    }));*/
 
     var customScrollView = CustomScrollView(
       slivers: [
         SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-          return ItemUsuario(indice: index, lista: widget.traidos);
-        }, childCount: widget.traidos.length))
+          return ItemUsuario(indice: index, lista: traidos);
+        }, childCount: traidos.length))
       ],
     );
     return Scaffold(
@@ -43,15 +36,15 @@ class _FirstScreenState extends State<FirstScreen> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<Usuario>>(
-          future: _populateTraidos(users, widget.traidos),
+          future: _obtenerListaUsuarios(users),
           builder: (context, snaphot) {
             if (snaphot.hasData) {
               return CustomScrollView(
                 slivers: [
                   SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                    return ItemUsuario(indice: index, lista: widget.traidos);
-                  }, childCount: widget.traidos.length)),
+                    return ItemUsuario(indice: index, lista: traidos);
+                  }, childCount: traidos.length)),
                 ],
               );
             } else if (snaphot.hasError) {
@@ -70,16 +63,11 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
 // este future es una promesa que debe tener el mismo tipo que el future dentro del widget futurebuilder
-  Future<List<Usuario>> _populateTraidos(users, traidos) async {
-    await users.getUsuarios().then(((List<Usuario> usuarios) {
-      traidos.addAll(usuarios);
-      print(traidos.length);
-    }));
-    if (traidos == null) {
-      return [];
-    } else {
-      return traidos;
-    }
+  Future<List<Usuario>> _obtenerListaUsuarios(
+    users,
+  ) async {
+    traidos = await users.getUsuarios();
+    return traidos;
   }
 }
 
@@ -99,6 +87,7 @@ class _ItemUsuarioState extends State<ItemUsuario> {
       margin: const EdgeInsets.all(1),
       child: Dismissible(
         key: UniqueKey(),
+        direction: DismissDirection.startToEnd,
         onDismissed: (direction) {
           Provider.of<UsuarioProvider>(context, listen: false)
               .dropUsuario(widget.lista[widget.indice]);
@@ -107,9 +96,8 @@ class _ItemUsuarioState extends State<ItemUsuario> {
         },
         background: Container(
             color: Colors.red,
-            child: const Center(
-                child: Text("Estas por eliminar este usuario",
-                    style: TextStyle(fontSize: 15, color: Colors.white)))),
+            child:
+                const Center(child: Icon(Icons.delete, color: Colors.white))),
         child: ListTile(
             title: Row(children: [
               Text(widget.lista[widget.indice].nombre),
@@ -118,7 +106,13 @@ class _ItemUsuarioState extends State<ItemUsuario> {
               ),
               Text(widget.lista[widget.indice].apellido),
             ]),
-            onLongPress: () {}),
+            onLongPress: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserForm(usuario: widget.lista[widget.indice])));
+            }),
       ),
     );
   }

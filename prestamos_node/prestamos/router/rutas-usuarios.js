@@ -19,7 +19,7 @@ router.get('/',async(req,res) =>{
 });
 
 router.post('/new',async(req,res)=>{
-    if(req.body!=null){
+    if(req.body.nombre=null){
         try {
             b=req.body;
             nom=b.nombre;

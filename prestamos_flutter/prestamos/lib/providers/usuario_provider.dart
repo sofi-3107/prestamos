@@ -9,9 +9,12 @@ class UsuarioProvider extends ChangeNotifier {
   UsuariosService service = UsuariosService();
   Future<List<Usuario>> getUsuarios() => service.getAll('usuarios');
 
-  void addUsuario(Usuario user) {
-    _usuarios.add(user);
+  addUsuario(Usuario user) async {
+    // _usuarios.add(user);
+
+    var resp = await service.createNew(user, 'usuarios/new');
     notifyListeners();
+    return resp;
   }
 
   dropUsuario(Usuario user) async {

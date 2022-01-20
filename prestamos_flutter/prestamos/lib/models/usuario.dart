@@ -46,4 +46,6 @@ class Usuario {
         "telefono": telefono,
         "observaciones": observaciones,
       };
+
+  //static String usuarioToJson(Usuario data) => json.encode(data.toJson());
 }
