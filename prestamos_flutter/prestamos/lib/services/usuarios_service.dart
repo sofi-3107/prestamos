@@ -11,7 +11,7 @@ class UsuariosService implements CrudRepository<Usuario> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: json.encode(object));
+        body: object.toJson());
     return response.toString();
   }
 

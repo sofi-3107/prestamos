@@ -108,14 +108,16 @@ class _UserFormState extends State<UserForm> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              if (_apellido != null && _nombre != null && _telefono != null) {
-                Provider.of<UsuarioProvider>(context, listen: false).addUsuario(
-                    Usuario(
-                        dni: _dni,
-                        nombre: _nombre,
-                        apellido: _apellido,
-                        telefono: _telefono,
-                        curso: _curso));
+              if (_apellido != null || _nombre != null || _telefono != null) {
+                var serverResponse =
+                    Provider.of<UsuarioProvider>(context, listen: false)
+                        .addUsuario(Usuario(
+                            dni: _dni,
+                            nombre: _nombre,
+                            apellido: _apellido,
+                            telefono: _telefono,
+                            curso: _curso));
+                Fluttertoast.showToast(msg: serverResponse);
                 Navigator.pop(context);
               } else {
                 Fluttertoast.showToast(

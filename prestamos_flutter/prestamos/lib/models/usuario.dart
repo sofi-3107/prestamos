@@ -27,6 +27,7 @@ class Usuario {
     this.observaciones,
   });
 
+  //JsonDecode devuelve un Map<String,dynamic>
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
         id: json["id"],
         nombre: json["nombre"],
@@ -37,6 +38,7 @@ class Usuario {
         observaciones: json["observaciones"],
       );
 
+// Para crear un Json hay que convertir el objeto Usuario en un Map<String,dynamic>
   Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,
