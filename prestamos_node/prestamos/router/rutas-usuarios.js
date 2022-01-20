@@ -55,7 +55,7 @@ router.get('/one/:id',async(req,res)=>{
         let elemento=await db.Usuario.findByPk(req.params.id);
         res.status(200).send(elemento);
     } catch (error) {
-        res.status(500).send('No se ha encontrado el elemento: '+error.message);
+        res.status(404).send('No se ha encontrado el elemento: '+error.message);
     }
 });
 

@@ -86,7 +86,6 @@ class _FirstScreenState extends State<FirstScreen> {
 class ItemUsuario extends StatefulWidget {
   ItemUsuario({Key? key, @required this.indice, @required this.lista})
       : super(key: key);
-
   final indice;
   final lista;
 
