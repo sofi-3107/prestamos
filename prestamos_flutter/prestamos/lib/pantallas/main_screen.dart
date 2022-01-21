@@ -82,12 +82,10 @@ class ItemUsuario extends StatefulWidget {
   State<ItemUsuario> createState() => _ItemUsuarioState();
 }
 
-//Revisar!! Dismissible debe contener a Card y no al reves
+//Revisar!! Dismissible debe contener a Card y no al
 class _ItemUsuarioState extends State<ItemUsuario> {
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(1),
-      child: Dismissible(
+    return Dismissible(
         key: Key(widget.lista[widget.indice].toString()),
         direction: DismissDirection.startToEnd,
         onDismissed: (direction) {
@@ -101,29 +99,29 @@ class _ItemUsuarioState extends State<ItemUsuario> {
             child: const Align(
                 alignment: Alignment(-0.8, 0.00),
                 child: Icon(Icons.delete, color: Colors.white))),
-        child: ListTile(
-            title: Row(children: [
-              Text(widget.lista[widget.indice].nombre),
-              Container(
-                width: 50,
-              ),
-              Text(widget.lista[widget.indice].apellido),
-            ]),
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Detail(
-                          user: widget.lista[widget.indice],
-                        ))),
-            onLongPress: () {
-              Navigator.push(
+        child: Card(
+          child: ListTile(
+              title: Row(children: [
+                Text(widget.lista[widget.indice].nombre),
+                Container(
+                  width: 50,
+                ),
+                Text(widget.lista[widget.indice].apellido),
+              ]),
+              onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          UserForm(usuario: widget.lista[widget.indice])));
-            }),
-      ),
-    );
+                      builder: (context) => Detail(
+                            user: widget.lista[widget.indice],
+                          ))),
+              onLongPress: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserForm(usuario: widget.lista[widget.indice])));
+              }),
+        ));
   }
 }
 
