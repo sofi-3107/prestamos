@@ -111,19 +111,26 @@ class _UserFormState extends State<UserForm> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               if (widget.usuario != null) {
-                Provider.of<UsuarioProvider>(context, listen: false)
-                    .replaceUsuario(widget.usuario!)
-                    .then((msg) => print(msg));
+                print('Entrando en el if de update');
+                widget.usuario!.nombre = _nombre;
+                widget.usuario!.apellido = _apellido;
+                widget.usuario!.telefono = _telefono;
+                widget.usuario!.curso = _curso;
+                var resp = Provider.of<UsuarioProvider>(context, listen: false)
+                    .replaceUsuario(widget.usuario!);
+                Navigator.pop(context);
               } else {
+                print('Entrando en el if de create');
                 if (_apellido != null || _nombre != null || _telefono != null) {
-                  Provider.of<UsuarioProvider>(context, listen: false)
+                  Provider.of<UsuarioProvider>(context)
                       .addUsuario(Usuario(
                           dni: _dni,
                           nombre: _nombre,
                           apellido: _apellido,
                           telefono: _telefono,
                           curso: _curso))
-                      .then((resp) => Fluttertoast.showToast(msg: resp));
+                      .then((resp) =>
+                          Fluttertoast.showToast(msg: 'usuario creado'));
 
                   Navigator.pop(context);
                 } else {

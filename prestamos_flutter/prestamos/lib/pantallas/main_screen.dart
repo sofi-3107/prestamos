@@ -82,7 +82,6 @@ class ItemUsuario extends StatefulWidget {
   State<ItemUsuario> createState() => _ItemUsuarioState();
 }
 
-//Revisar!! Dismissible debe contener a Card y no al
 class _ItemUsuarioState extends State<ItemUsuario> {
   Widget build(BuildContext context) {
     return Dismissible(

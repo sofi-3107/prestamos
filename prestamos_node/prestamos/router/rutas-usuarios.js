@@ -76,7 +76,9 @@ router.put('/update/:id',async(req,res)=>{
                 grado=b.curso;
                 phone=b.telefono;
 
-    await db.Elemento.update({
+                console.log(b.nom+''+b.apel);
+
+    await db.Usuario.update({
                 nombre:nom,
                 apellido:apel,
                 dni:doc,

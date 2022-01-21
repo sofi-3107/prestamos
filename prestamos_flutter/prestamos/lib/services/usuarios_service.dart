@@ -5,14 +5,17 @@ import 'package:prestamos/repositories/crud_repository.dart';
 
 class UsuariosService implements CrudRepository<Usuario> {
   final rootPath = 'http://192.168.100.4:3000/';
+  final updatePath = 'usuarios/update/';
+  final deletePath = 'usuarios/delete/';
+  final newPath = 'usuarios/new';
   @override
   Future<String> createNew(Usuario object) async {
-    final response = await http.post(Uri.parse(rootPath + 'usuarios/new'),
+    final response = await http.post(Uri.parse(rootPath + newPath),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: usuarioToJson(object));
-    return response.toString();
+    return json.decode(response.body);
   }
 
   @override
@@ -39,28 +42,28 @@ class UsuariosService implements CrudRepository<Usuario> {
   }
 
   @override
-  Future<String> update(Usuario object) {
-    final response = http.put(
-        Uri.parse(rootPath + 'usuarios/update/' + object.id.toString()),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: usuarioToJson(object));
-    print('Ruta:' + rootPath + 'usuarios/update/' + object.id.toString());
-
-    throw UnimplementedError('No se ha podido actualizar el usuario');
+  Future<String> update(Usuario object) async {
+    final response =
+        await http.put(Uri.parse(rootPath + updatePath + object.id.toString()),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: usuarioToJson(object));
+    print('Ruta:' + rootPath + updatePath + object.id.toString());
+    return await json.decode(response.body);
+    //throw UnimplementedError('No se ha podido actualizar el usuario');
   }
 
   /**No funciona sin los headers, da error de que no rconoce el caracter */
   @override
   Future<String> delete(int id) async {
     final response = await http.delete(
-      Uri.parse(rootPath + 'usuarios/delete/' + id.toString()),
+      Uri.parse(rootPath + deletePath + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    return await json.decode(response.body.toString());
+    return await json.decode(response.body);
   }
 
   /*  static Future<List<Usuario>> getAllUsuarios() async {
