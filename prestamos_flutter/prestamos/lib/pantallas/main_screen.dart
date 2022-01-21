@@ -82,12 +82,13 @@ class ItemUsuario extends StatefulWidget {
   State<ItemUsuario> createState() => _ItemUsuarioState();
 }
 
+//Revisar!! Dismissible debe contener a Card y no al reves
 class _ItemUsuarioState extends State<ItemUsuario> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(1),
       child: Dismissible(
-        key: UniqueKey(),
+        key: Key(widget.lista[widget.indice].toString()),
         direction: DismissDirection.startToEnd,
         onDismissed: (direction) {
           Provider.of<UsuarioProvider>(context, listen: false)

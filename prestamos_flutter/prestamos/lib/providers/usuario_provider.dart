@@ -7,19 +7,19 @@ class UsuarioProvider extends ChangeNotifier {
   List<Usuario> _usuarios = [];
 
   UsuariosService service = UsuariosService();
-  Future<List<Usuario>> getUsuarios() => service.getAll('usuarios');
+  Future<List<Usuario>> getUsuarios() => service.getAll();
 
   addUsuario(Usuario user) async {
     // _usuarios.add(user);
 
-    var resp = await service.createNew(user, 'usuarios/new');
+    var resp = await service.createNew(user);
     notifyListeners();
     return resp;
   }
 
   dropUsuario(Usuario user) async {
     /*_usuarios.removeWhere((u) => u.id == user.id);*/
-    var resp = await service.delete(user.id!, 'usuarios/delete/');
+    var resp = await service.delete(user.id!);
     notifyListeners();
     return resp;
   }
