@@ -7,11 +7,11 @@ class UsuariosService implements CrudRepository<Usuario> {
   final rootPath = 'http://192.168.100.4:3000/';
   @override
   Future<String> createNew(Usuario object, String pathSection) async {
-    final response = await http.put(Uri.parse(rootPath + pathSection),
+    final response = await http.post(Uri.parse(rootPath + pathSection),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: object.toJson());
+        body: usuarioToJson(object));
     return response.toString();
   }
 

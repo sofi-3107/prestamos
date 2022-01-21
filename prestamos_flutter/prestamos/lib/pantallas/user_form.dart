@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -109,15 +111,15 @@ class _UserFormState extends State<UserForm> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               if (_apellido != null || _nombre != null || _telefono != null) {
-                var serverResponse =
-                    Provider.of<UsuarioProvider>(context, listen: false)
-                        .addUsuario(Usuario(
-                            dni: _dni,
-                            nombre: _nombre,
-                            apellido: _apellido,
-                            telefono: _telefono,
-                            curso: _curso));
-                Fluttertoast.showToast(msg: serverResponse);
+                Provider.of<UsuarioProvider>(context, listen: false)
+                    .addUsuario(Usuario(
+                        dni: _dni,
+                        nombre: _nombre,
+                        apellido: _apellido,
+                        telefono: _telefono,
+                        curso: _curso))
+                    .then((resp) => Fluttertoast.showToast(msg: resp));
+
                 Navigator.pop(context);
               } else {
                 Fluttertoast.showToast(

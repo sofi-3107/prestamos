@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
+
 Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
 
 String usuarioToJson(Usuario data) => json.encode(data.toJson());

@@ -96,8 +96,9 @@ class _ItemUsuarioState extends State<ItemUsuario> {
         },
         background: Container(
             color: Colors.red,
-            child:
-                const Center(child: Icon(Icons.delete, color: Colors.white))),
+            child: const Align(
+                alignment: Alignment(-0.8, 0.00),
+                child: Icon(Icons.delete, color: Colors.white))),
         child: ListTile(
             title: Row(children: [
               Text(widget.lista[widget.indice].nombre),
