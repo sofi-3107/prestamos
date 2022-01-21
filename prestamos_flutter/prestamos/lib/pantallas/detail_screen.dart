@@ -11,16 +11,23 @@ class Detail extends StatelessWidget {
         appBar: AppBar(title: Text(user.nombre), centerTitle: true),
         body: Container(
           padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(user.nombre),
-              SizedBox(height: 20),
-              Text(user.apellido),
-              SizedBox(height: 20),
-              Text(user.telefono),
-              SizedBox(height: 20),
-              Text(user.curso),
-            ],
+          child: Center(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(user.nombre),
+                    SizedBox(width: 5),
+                    Text(user.apellido),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Text(user.telefono),
+                SizedBox(height: 20),
+                Text(user.curso),
+              ],
+            ),
           ),
         ));
   }

@@ -21,7 +21,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<UsuarioProvider>(context);
+    final users = Provider.of<UsuarioProvider>(context, listen: true);
 
     var customScrollView = CustomScrollView(
       slivers: [
