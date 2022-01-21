@@ -30,16 +30,25 @@ class UsuariosService implements CrudRepository<Usuario> {
     throw Exception('Failed to load users');
   }
 
+  //Está funcionando con solo enviar el objeto con su indice desde la lista del getAll
   @override
-  Future<Usuario> getOne(int id, String pathSection) {
-    // TODO: implement getOne
-    throw UnimplementedError();
+  Future<Usuario> getOne(int id) {
+    final response =
+        http.get(Uri.parse(rootPath + 'usuarios/one/' + id.toString()));
+    throw UnimplementedError('Error al llegar al servicio');
   }
 
   @override
-  Future<bool> update(Usuario object, String pathSection) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<String> update(Usuario object) {
+    final response = http.put(
+        Uri.parse(rootPath + 'usuarios/update/' + object.id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: usuarioToJson(object));
+    print('Ruta:' + rootPath + 'usuarios/update/' + object.id.toString());
+
+    throw UnimplementedError('No se ha podido actualizar el usuario');
   }
 
   /**No funciona sin los headers, da error de que no rconoce el caracter */

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prestamos/models/usuario.dart';
+import 'package:prestamos/pantallas/detail_screen.dart';
 import 'package:prestamos/pantallas/user_form.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
@@ -107,6 +108,12 @@ class _ItemUsuarioState extends State<ItemUsuario> {
               ),
               Text(widget.lista[widget.indice].apellido),
             ]),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Detail(
+                          user: widget.lista[widget.indice],
+                        ))),
             onLongPress: () {
               Navigator.push(
                   context,

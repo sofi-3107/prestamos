@@ -24,15 +24,17 @@ class UsuarioProvider extends ChangeNotifier {
     return resp;
   }
 
-  void replaceUsuario(Usuario user) {
-    _usuarios.where((u) => u.id == user.id).map((e) {
+  replaceUsuario(Usuario user) async {
+/*     _usuarios.where((u) => u.id == user.id).map((e) {
       e.nombre = user.nombre;
       e.apellido = user.apellido;
       e.telefono = user.telefono;
       e.curso = user.curso;
       e.dni = user.dni;
       e.observaciones = user.observaciones;
-    });
+    }); */
+    var resp = await service.update(user);
     notifyListeners();
+    return resp;
   }
 }

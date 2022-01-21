@@ -38,7 +38,7 @@ class _UserFormState extends State<UserForm> {
   String _observaciones = "";
 
   Usuario emptyUser = Usuario(
-      nombre: 'Empty',
+      nombre: '',
       apellido: '',
       telefono: '',
       dni: '',
@@ -110,20 +110,26 @@ class _UserFormState extends State<UserForm> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              if (_apellido != null || _nombre != null || _telefono != null) {
+              if (widget.usuario != null) {
                 Provider.of<UsuarioProvider>(context, listen: false)
-                    .addUsuario(Usuario(
-                        dni: _dni,
-                        nombre: _nombre,
-                        apellido: _apellido,
-                        telefono: _telefono,
-                        curso: _curso))
-                    .then((resp) => Fluttertoast.showToast(msg: resp));
-
-                Navigator.pop(context);
+                    .replaceUsuario(widget.usuario!)
+                    .then((msg) => print(msg));
               } else {
-                Fluttertoast.showToast(
-                    msg: 'Debe completar los campos obligatorios');
+                if (_apellido != null || _nombre != null || _telefono != null) {
+                  Provider.of<UsuarioProvider>(context, listen: false)
+                      .addUsuario(Usuario(
+                          dni: _dni,
+                          nombre: _nombre,
+                          apellido: _apellido,
+                          telefono: _telefono,
+                          curso: _curso))
+                      .then((resp) => Fluttertoast.showToast(msg: resp));
+
+                  Navigator.pop(context);
+                } else {
+                  Fluttertoast.showToast(
+                      msg: 'Debe completar los campos obligatorios');
+                }
               }
             }
           }),

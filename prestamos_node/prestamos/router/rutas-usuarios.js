@@ -72,9 +72,9 @@ router.put('/update/:id',async(req,res)=>{
                 nom=b.nombre;
                 apel=b.apellido;
                 doc=b.dni;
-                obs=b.obs;
+                obs=b.observaciones;
                 grado=b.curso;
-                phone=b.phone;
+                phone=b.telefono;
 
     await db.Elemento.update({
                 nombre:nom,
