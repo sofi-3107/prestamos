@@ -21,7 +21,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<UsuarioProvider>(context, listen: true);
+    var users = Provider.of<UsuarioProvider>(context);
+    users.getUsuarios().then((users) => traidos = users);
 
     var customScrollView = CustomScrollView(
       slivers: [
@@ -37,7 +38,7 @@ class _FirstScreenState extends State<FirstScreen> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<Usuario>>(
-          future: _obtenerListaUsuarios(users),
+          future: users.getUsuarios().then((value) => traidos = value),
           builder: (context, snaphot) {
             if (snaphot.hasData) {
               return CustomScrollView(
@@ -64,12 +65,12 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
 // este future es una promesa que debe tener el mismo tipo que el future dentro del widget futurebuilder
-  Future<List<Usuario>> _obtenerListaUsuarios(
+/*   Future<List<Usuario>> _obtenerListaUsuarios(
     users,
   ) async {
     traidos = await users.getUsuarios();
     return traidos;
-  }
+  } */
 }
 
 class ItemUsuario extends StatefulWidget {
@@ -107,18 +108,24 @@ class _ItemUsuarioState extends State<ItemUsuario> {
                 ),
                 Text(widget.lista[widget.indice].apellido),
               ]),
-              onTap: () => Navigator.push(
+              onTap:
+                  () => /* Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => Detail(
                             user: widget.lista[widget.indice],
-                          ))),
+                          ))) */
+                      Navigator.of(context).pushNamed('/detail',
+                          arguments: widget.lista[widget.indice]),
               onLongPress: () {
-                Navigator.push(
+/*                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             UserForm(usuario: widget.lista[widget.indice])));
+                           */
+                Navigator.of(context).pushNamed('/editUser',
+                    arguments: widget.lista[widget.indice]);
               }),
         ));
   }

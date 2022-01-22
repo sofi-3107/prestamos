@@ -4,16 +4,19 @@ import 'package:prestamos/services/usuarios_service.dart';
 import 'package:prestamos/models/usuario.dart';
 
 class UsuarioProvider extends ChangeNotifier {
-  List<Usuario> _usuarios = [];
+  List<Usuario> usuarios = [];
 
   UsuariosService service = UsuariosService();
-  Future<List<Usuario>> getUsuarios() => service.getAll();
+  Future<List<Usuario>> getUsuarios() {
+    return service.getAll();
+  }
 
   addUsuario(Usuario user) async {
     // _usuarios.add(user);
 
     var resp = await service.createNew(user);
     notifyListeners();
+    refreshUsers();
     return resp;
   }
 
@@ -21,6 +24,7 @@ class UsuarioProvider extends ChangeNotifier {
     /*_usuarios.removeWhere((u) => u.id == user.id);*/
     var resp = await service.delete(user.id!);
     notifyListeners();
+    refreshUsers();
     return resp;
   }
 
@@ -35,6 +39,11 @@ class UsuarioProvider extends ChangeNotifier {
     }); */
     var resp = await service.update(user);
     notifyListeners();
+    refreshUsers();
     return resp;
+  }
+
+  refreshUsers() async {
+    usuarios = await service.getAll();
   }
 }
