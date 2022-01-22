@@ -13,7 +13,6 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  List<Usuario> traidos = [];
   @override
   void initState() {
     super.initState();
@@ -22,25 +21,18 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     var users = Provider.of<UsuarioProvider>(context);
-    users.getUsuarios().then((users) => traidos = users);
-
-    var customScrollView = CustomScrollView(
-      slivers: [
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return ItemUsuario(indice: index, lista: traidos);
-        }, childCount: traidos.length))
-      ],
-    );
+    List<Usuario> traidos = [];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lista de Usuarios'),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Usuario>>(
-          future: users.getUsuarios().then((value) => traidos = value),
-          builder: (context, snaphot) {
-            if (snaphot.hasData) {
+          future: users.getUsuarios(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              users.getUsuarios().then((data) => traidos = data);
+
               return CustomScrollView(
                 slivers: [
                   SliverList(
@@ -49,8 +41,10 @@ class _FirstScreenState extends State<FirstScreen> {
                   }, childCount: traidos.length)),
                 ],
               );
-            } else if (snaphot.hasError) {
-              return const Text('Ha ocurrido un error');
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: const Text('Ha ocurrido un error',
+                      style: TextStyle(fontSize: 30, color: Colors.red)));
             } else {
               return const Center(child: CircularProgressIndicator());
             }

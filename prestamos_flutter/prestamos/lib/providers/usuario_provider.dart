@@ -7,8 +7,9 @@ class UsuarioProvider extends ChangeNotifier {
   List<Usuario> usuarios = [];
 
   UsuariosService service = UsuariosService();
-  Future<List<Usuario>> getUsuarios() {
-    return service.getAll();
+  Future<List<Usuario>> getUsuarios() async {
+    usuarios = await service.getAll();
+    return usuarios;
   }
 
   addUsuario(Usuario user) async {
@@ -16,7 +17,6 @@ class UsuarioProvider extends ChangeNotifier {
 
     var resp = await service.createNew(user);
     notifyListeners();
-    refreshUsers();
     return resp;
   }
 
@@ -24,7 +24,6 @@ class UsuarioProvider extends ChangeNotifier {
     /*_usuarios.removeWhere((u) => u.id == user.id);*/
     var resp = await service.delete(user.id!);
     notifyListeners();
-    refreshUsers();
     return resp;
   }
 

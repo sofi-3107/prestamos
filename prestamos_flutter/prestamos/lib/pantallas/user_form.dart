@@ -128,9 +128,7 @@ class _UserFormState extends State<UserForm> {
                           apellido: _apellido,
                           telefono: _telefono,
                           curso: _curso));
-
                   Fluttertoast.showToast(msg: 'usuario creado');
-
                   Navigator.pop(context);
                 } else {
                   Fluttertoast.showToast(
