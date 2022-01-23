@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:prestamos/components/list_item.dart';
 import 'package:prestamos/models/usuario.dart';
-import 'package:prestamos/pantallas/detail_screen.dart';
 import 'package:prestamos/pantallas/user_form.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +21,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     var users = Provider.of<UsuarioProvider>(context);
+    var noListenProvider = Provider.of<UsuarioProvider>(context, listen: false);
     List<Usuario> traidos = [];
     return Scaffold(
       appBar: AppBar(
@@ -37,7 +38,10 @@ class _FirstScreenState extends State<FirstScreen> {
                 slivers: [
                   SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                    return ItemUsuario(indice: index, lista: traidos);
+                    return Item(
+                        indice: index,
+                        lista: traidos,
+                        provider: noListenProvider);
                   }, childCount: traidos.length)),
                 ],
               );
@@ -62,50 +66,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
 }
 
-class ItemUsuario extends StatefulWidget {
-  ItemUsuario({Key? key, @required this.indice, @required this.lista})
-      : super(key: key);
-  final indice;
-  final lista;
 
-  @override
-  State<ItemUsuario> createState() => _ItemUsuarioState();
-}
-
-class _ItemUsuarioState extends State<ItemUsuario> {
-  Widget build(BuildContext context) {
-    return Dismissible(
-        key: Key(widget.lista[widget.indice].toString()),
-        direction: DismissDirection.startToEnd,
-        onDismissed: (direction) {
-          Provider.of<UsuarioProvider>(context, listen: false)
-              .dropUsuario(widget.lista[widget.indice]);
-          Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text('Usuario eliminado')));
-        },
-        background: Container(
-            color: Colors.red,
-            child: const Align(
-                alignment: Alignment(-0.8, 0.00),
-                child: Icon(Icons.delete, color: Colors.white))),
-        child: Card(
-          child: ListTile(
-              title: Row(children: [
-                Text(widget.lista[widget.indice].nombre),
-                Container(
-                  width: 50,
-                ),
-                Text(widget.lista[widget.indice].apellido),
-              ]),
-              onTap: () => Navigator.of(context)
-                  .pushNamed('/detail', arguments: widget.lista[widget.indice]),
-              onLongPress: () {
-                Navigator.of(context).pushNamed('/editUser',
-                    arguments: widget.lista[widget.indice]);
-              }),
-        ));
-  }
-}
 
 
 
