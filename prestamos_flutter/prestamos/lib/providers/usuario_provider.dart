@@ -38,7 +38,6 @@ class UsuarioProvider extends ChangeNotifier {
     }); */
     var resp = await service.update(user);
     notifyListeners();
-    refreshUsers();
     return resp;
   }
 

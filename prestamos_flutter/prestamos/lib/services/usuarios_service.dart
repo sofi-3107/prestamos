@@ -51,7 +51,6 @@ class UsuariosService implements CrudRepository<Usuario> {
             body: usuarioToJson(object));
     print('Ruta:' + rootPath + updatePath + object.id.toString());
     return response.body.toString();
-    //throw UnimplementedError('No se ha podido actualizar el usuario');
   }
 
   /**No funciona sin los headers, da error de que no rconoce el caracter */
