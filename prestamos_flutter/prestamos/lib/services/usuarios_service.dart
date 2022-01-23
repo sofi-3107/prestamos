@@ -15,7 +15,7 @@ class UsuariosService implements CrudRepository<Usuario> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: usuarioToJson(object));
-    return json.decode(response.body);
+    return response.body.toString();
   }
 
   @override
@@ -50,7 +50,7 @@ class UsuariosService implements CrudRepository<Usuario> {
             },
             body: usuarioToJson(object));
     print('Ruta:' + rootPath + updatePath + object.id.toString());
-    return await json.decode(response.body);
+    return response.body.toString();
     //throw UnimplementedError('No se ha podido actualizar el usuario');
   }
 
@@ -63,7 +63,7 @@ class UsuariosService implements CrudRepository<Usuario> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    return await json.decode(response.body);
+    return response.body.toString();
   }
 
   /*  static Future<List<Usuario>> getAllUsuarios() async {

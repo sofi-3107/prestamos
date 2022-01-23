@@ -31,7 +31,12 @@ class _FirstScreenState extends State<FirstScreen> {
           future: users.getUsuarios(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              users.getUsuarios().then((data) => traidos = data);
+              users.getUsuarios().then((data) {
+                data.map((e) => print('dta pura: ${e.nombre} - ${e.apellido}'));
+                traidos = data;
+                traidos
+                    .map((e) => print('traidos: ${e.nombre} - ${e.apellido}'));
+              });
 
               return CustomScrollView(
                 slivers: [
