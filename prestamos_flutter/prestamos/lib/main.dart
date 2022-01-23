@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prestamos/pantallas/main_screen.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
+import 'package:prestamos/rutas/router.dart';
 import 'package:provider/provider.dart';
 
 import 'models/usuario.dart';
@@ -17,7 +18,8 @@ class ProviderContainer extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => UsuarioProvider(),
       child: MaterialApp(
-        home: FirstScreen(),
+        initialRoute: '/',
+        onGenerateRoute: RouteGenerator.generateRoute,
         debugShowCheckedModeBanner: false,
       ),
     );

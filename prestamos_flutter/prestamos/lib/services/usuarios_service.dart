@@ -5,19 +5,22 @@ import 'package:prestamos/repositories/crud_repository.dart';
 
 class UsuariosService implements CrudRepository<Usuario> {
   final rootPath = 'http://192.168.100.4:3000/';
+  final updatePath = 'usuarios/update/';
+  final deletePath = 'usuarios/delete/';
+  final newPath = 'usuarios/new';
   @override
-  Future<String> createNew(Usuario object, String pathSection) async {
-    final response = await http.put(Uri.parse(rootPath + pathSection),
+  Future<String> createNew(Usuario object) async {
+    final response = await http.post(Uri.parse(rootPath + newPath),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: object.toJson());
-    return response.toString();
+        body: usuarioToJson(object));
+    return response.body.toString();
   }
 
   @override
-  Future<List<Usuario>> getAll(String pathSection) async {
-    final response = await http.get(Uri.parse(rootPath + pathSection));
+  Future<List<Usuario>> getAll() async {
+    final response = await http.get(Uri.parse(rootPath + 'usuarios'));
     if (response.statusCode == 200) {
       final decodedResponse = await json.decode(response.body);
       List<Usuario> usuarios = [];
@@ -30,28 +33,36 @@ class UsuariosService implements CrudRepository<Usuario> {
     throw Exception('Failed to load users');
   }
 
+  //Está funcionando con solo enviar el objeto con su indice desde la lista del getAll
   @override
-  Future<Usuario> getOne(int id, String pathSection) {
-    // TODO: implement getOne
-    throw UnimplementedError();
+  Future<Usuario> getOne(int id) {
+    final response =
+        http.get(Uri.parse(rootPath + 'usuarios/one/' + id.toString()));
+    throw UnimplementedError('Error al llegar al servicio');
   }
 
   @override
-  Future<bool> update(Usuario object, String pathSection) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<String> update(Usuario object) async {
+    final response =
+        await http.put(Uri.parse(rootPath + updatePath + object.id.toString()),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: usuarioToJson(object));
+    print('Ruta:' + rootPath + updatePath + object.id.toString());
+    return response.body.toString();
   }
 
   /**No funciona sin los headers, da error de que no rconoce el caracter */
   @override
-  Future<String> delete(int id, String pathSection) async {
+  Future<String> delete(int id) async {
     final response = await http.delete(
-      Uri.parse(rootPath + pathSection + id.toString()),
+      Uri.parse(rootPath + deletePath + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    return await json.decode(response.body.toString());
+    return response.body.toString();
   }
 
   /*  static Future<List<Usuario>> getAllUsuarios() async {

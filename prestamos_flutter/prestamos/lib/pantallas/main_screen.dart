@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prestamos/components/list_item.dart';
 import 'package:prestamos/models/usuario.dart';
 import 'package:prestamos/pantallas/user_form.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
@@ -12,7 +13,6 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  List<Usuario> traidos = [];
   @override
   void initState() {
     super.initState();
@@ -20,35 +20,35 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<UsuarioProvider>(context);
-
-    var customScrollView = CustomScrollView(
-      slivers: [
-        SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return ItemUsuario(indice: index, lista: traidos);
-        }, childCount: traidos.length))
-      ],
-    );
+    var users = Provider.of<UsuarioProvider>(context);
+    var noListenProvider = Provider.of<UsuarioProvider>(context, listen: false);
+    List<Usuario> traidos = [];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lista de Usuarios'),
         centerTitle: true,
       ),
       body: FutureBuilder<List<Usuario>>(
-          future: _obtenerListaUsuarios(users),
-          builder: (context, snaphot) {
-            if (snaphot.hasData) {
+          future: users.getUsuarios(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              users.getUsuarios().then((data) => traidos = data);
+
               return CustomScrollView(
                 slivers: [
                   SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                    return ItemUsuario(indice: index, lista: traidos);
+                    return Item(
+                        indice: index,
+                        lista: traidos,
+                        provider: noListenProvider);
                   }, childCount: traidos.length)),
                 ],
               );
-            } else if (snaphot.hasError) {
-              return const Text('Ha ocurrido un error');
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: const Text('Ha ocurrido un error',
+                      style: TextStyle(fontSize: 30, color: Colors.red)));
             } else {
               return const Center(child: CircularProgressIndicator());
             }
@@ -63,60 +63,10 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
 // este future es una promesa que debe tener el mismo tipo que el future dentro del widget futurebuilder
-  Future<List<Usuario>> _obtenerListaUsuarios(
-    users,
-  ) async {
-    traidos = await users.getUsuarios();
-    return traidos;
-  }
+
 }
 
-class ItemUsuario extends StatefulWidget {
-  ItemUsuario({Key? key, @required this.indice, @required this.lista})
-      : super(key: key);
-  final indice;
-  final lista;
 
-  @override
-  State<ItemUsuario> createState() => _ItemUsuarioState();
-}
-
-class _ItemUsuarioState extends State<ItemUsuario> {
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(1),
-      child: Dismissible(
-        key: UniqueKey(),
-        direction: DismissDirection.startToEnd,
-        onDismissed: (direction) {
-          Provider.of<UsuarioProvider>(context, listen: false)
-              .dropUsuario(widget.lista[widget.indice]);
-          Scaffold.of(context)
-              .showSnackBar(SnackBar(content: Text('Usuario eliminado')));
-        },
-        background: Container(
-            color: Colors.red,
-            child:
-                const Center(child: Icon(Icons.delete, color: Colors.white))),
-        child: ListTile(
-            title: Row(children: [
-              Text(widget.lista[widget.indice].nombre),
-              Container(
-                width: 50,
-              ),
-              Text(widget.lista[widget.indice].apellido),
-            ]),
-            onLongPress: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          UserForm(usuario: widget.lista[widget.indice])));
-            }),
-      ),
-    );
-  }
-}
 
 
 

@@ -19,15 +19,15 @@ router.get('/',async(req,res) =>{
 });
 
 router.post('/new',async(req,res)=>{
-    if(req.body.nombre=null){
+    if(req.body.nombre!=null){
         try {
             b=req.body;
             nom=b.nombre;
             apel=b.apellido;
             doc=b.dni;
-            obs=b.obs;
+            obs=b.observaciones;
             grado=b.curso;
-            phone=b.phone;
+            phone=b.telefono;
 
             await db.Usuario.create({
                 nombre:nom,
@@ -72,11 +72,13 @@ router.put('/update/:id',async(req,res)=>{
                 nom=b.nombre;
                 apel=b.apellido;
                 doc=b.dni;
-                obs=b.obs;
+                obs=b.observaciones;
                 grado=b.curso;
-                phone=b.phone;
+                phone=b.telefono;
 
-    await db.Elemento.update({
+                console.log(b.nom+''+b.apel);
+
+    await db.Usuario.update({
                 nombre:nom,
                 apellido:apel,
                 dni:doc,
