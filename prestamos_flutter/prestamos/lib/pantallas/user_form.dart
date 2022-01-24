@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:form_field_validator/form_field_validator.dart';
+
 import 'package:prestamos/models/usuario.dart';
 import 'package:prestamos/providers/usuario_provider.dart';
+
 import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
@@ -12,7 +12,8 @@ class UserForm extends StatefulWidget {
 
   final dynamic usuario;
 
-  /**Lógica a implementar, si el objeto usuario llega vacío es un formulario de alta y se usan las variables definidas abajo, si no se 
+  /**Lógica a implementar, si el objeto usuario llega vacío es un formulario de alta 
+   * y se usan las variables definidas abajo, si no se 
    * se cargan los datos que trae el objeto para ser editados
   */
   @override
@@ -58,7 +59,7 @@ class _UserFormState extends State<UserForm> {
                       decoration: _stylizeInput(
                           'Apellido'), // Para reutilizar el widget necesito recibir un array con los nombres de los atributos de clase que sran los nombres de los campos
                       onSaved: (value) {
-                        emptyUser.apellido = value ?? 'NO tengo datos';
+                        emptyUser.apellido = value ?? 'No tengo datos';
                       }),
                   SizedBox(
                     height: 30,
@@ -108,10 +109,14 @@ class _UserFormState extends State<UserForm> {
                 widget.usuario!.nombre = emptyUser.nombre;
                 widget.usuario!.apellido = emptyUser.apellido;
                 widget.usuario!.telefono = emptyUser.telefono;
-                widget.usuario!.curso = emptyUser.telefono;
+                widget.usuario!.curso = emptyUser.curso;
+                widget.usuario!.observaciones = emptyUser.observaciones;
                 Provider.of<UsuarioProvider>(context, listen: false)
                     .replaceUsuario(widget.usuario!);
-                Fluttertoast.showToast(msg: 'Usuario modificado');
+                // Fluttertoast.showToast(msg: 'Usuario modificado');
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Usuario modificado correctamente'),
+                    backgroundColor: Colors.blue));
                 Navigator.pop(context);
               } else {
                 if (emptyUser.apellido != null ||
@@ -119,11 +124,14 @@ class _UserFormState extends State<UserForm> {
                     emptyUser.telefono != null) {
                   Provider.of<UsuarioProvider>(context, listen: false)
                       .addUsuario(emptyUser);
-                  Fluttertoast.showToast(msg: 'usuario creado');
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Usuario creado correctamente'),
+                      backgroundColor: Colors.blue));
                   Navigator.pop(context);
                 } else {
-                  Fluttertoast.showToast(
-                      msg: 'Debe completar los campos obligatorios');
+                  /*Fluttertoast.showToast(
+                      msg: 'Debe completar los campos obligatorios');*/
+
                 }
               }
             }

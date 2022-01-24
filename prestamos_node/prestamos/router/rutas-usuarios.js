@@ -35,6 +35,7 @@ router.post('/new',async(req,res)=>{
                 dni:doc,
                 curso:grado,
                 telefono:phone,
+                observaciones:obs,
             });
             res.status(201).send(`Usuario ${nom} creado correctamente`);
     
@@ -84,6 +85,7 @@ router.put('/update/:id',async(req,res)=>{
                 dni:doc,
                 curso:grado,
                 telefono:phone,
+                observaciones:obs,
     },{where: {id:req.params.id}})
         .then(res.status(200).send(`Usuario actualizado correctamente`))
         .catch(error=>res.status(500).send('No se ha podido actualizar el Usuario: '+error.message))
