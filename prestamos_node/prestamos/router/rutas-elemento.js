@@ -25,7 +25,8 @@ router.post('/new',upload.single('img'),async(req,res)=>{
         console.log('POST: '+ req.body.nombre);
         try {
             const {nombre,descripcion,observaciones,codigo_id,cod_inventario,num_serie,estado} = req.body;
-            const imagen=req.file.filename;
+            const imagen=`http://localhost:3000/public/${req.file.filename}`;
+            //host:port/public/filename
             console.log('ruta imagen: '+imagen)
             await db.Elemento.create({
                 nombre,
@@ -37,7 +38,7 @@ router.post('/new',upload.single('img'),async(req,res)=>{
                 estado,
                 imagen
             });
-            res.status(201).send(`Elemento ${nombre} ${codigo_id} y ${req.file} creado correctamente`);
+            res.status(201).send(`Elemento ${nombre} ${codigo_id} y ${imagen} creado correctamente`);
     
         } catch (error) {
             res.status(400).send('Error al crear elemento: '+error.message);

@@ -28,6 +28,9 @@ router.post('/new',async(req,res)=>{
             obs=b.observaciones;
             grado=b.curso;
             phone=b.telefono;
+            if(nom=='' || apel=='' || doc=='' || grado==''){
+                res.status(500).send('No puedo crear un usuario sin los datos requeridos');
+            }
 
             await db.Usuario.create({
                 nombre:nom,
