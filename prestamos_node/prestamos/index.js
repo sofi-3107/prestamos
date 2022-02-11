@@ -14,6 +14,9 @@ app.use(cors());
 app.use('/elementos',require('./router/rutas-elemento'));
 app.use('/usuarios',require('./router/rutas-usuarios'));
 app.use('/prestamos',require('./router/rutas-prestamos'))
+
+/**mostramos public y en el server es storage/img */
+app.use('/public',express.static(`${__dirname}/storage/imgs`));
 async function waitDb() {
     //await db.sequelize.sync({force: true}).then(console.log('Modelos sincronizados'));
 }

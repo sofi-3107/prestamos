@@ -29,14 +29,11 @@ class _FirstScreenState extends State<FirstScreen> {
         centerTitle: true,
       ),
       body: FutureBuilder<List<Usuario>>(
-          future: users.getUsuarios().then((datos) => traidos = datos),
+          future: users.getUsuarios(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              users.getUsuarios().then((data) {
-                data.forEach((i) => print('data: ${i.nombre}'));
-              });
+              users.getUsuarios().then((data) => traidos = data);
 
-              traidos.forEach((i) => print('traidos: ${i.apellido}'));
               return CustomScrollView(
                 slivers: [
                   SliverList(
