@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     cod_inventario: DataTypes.STRING(20),
     estado: DataTypes.ENUM('NUEVO','MUY BUENO','BUENO','REGULAR','MALO','BAJA'),
     observaciones: DataTypes.STRING(100),
-    imagen: DataTypes.STRING
+    imagen: DataTypes.STRING(50)
   }, {
     sequelize,
     modelName: 'Elemento',

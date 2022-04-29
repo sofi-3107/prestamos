@@ -24,11 +24,14 @@ router.post('/new',upload.single('img'),async(req,res)=>{
     if(req.body!=null){
         console.log('POST: '+ req.body.nombre);
         try {
-            const {nombre,descripcion,observaciones,codigo_id,cod_inventario,num_serie,estado} = req.body;
-            const imagen=`http://localhost:3000/public/${req.file.filename}`;
+           // const {nombre,descripcion,observaciones,codigo_id,cod_inventario,num_serie,estado} = req.body;
+           const imagen=req.file!=null?  `http://localhost:3000/public/${req.file.filename}`:"";
+          
             //host:port/public/filename
             console.log('ruta imagen: '+imagen)
-            await db.Elemento.create({
+            console.log(req.body+imagen);
+            await db.Elemento.create(req.body);
+           /*  await db.Elemento.create({
                 nombre,
                 descripcion,
                 num_serie,
@@ -37,7 +40,7 @@ router.post('/new',upload.single('img'),async(req,res)=>{
                 observaciones,
                 estado,
                 imagen
-            });
+            }); */
             res.status(201).send(`Elemento ${nombre} ${codigo_id} y ${imagen} creado correctamente`);
     
         } catch (error) {
